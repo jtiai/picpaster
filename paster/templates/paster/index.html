@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% load staticfiles %}
+        <!-- Bootstrap -->
+        <link href="{% static "paster/css/bootstrap.min.css" %}" rel="stylesheet">
+        <link href="{% static "paster/css/sticky-footer.css" %}" rel="stylesheet">
+        <title>PicPaster</title>
+        <link href="{% static 'paster/css/dropzone.css' %}" type="text/css" rel="stylesheet"/>
+    </head>
+    <body>
+      <div class="container">
+        <div class="page-header"><h1>PicPaster</h1></div>
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a href="{% url "paster:index" %}">Home</a></li>
+          <li role="presentation"><a href="{% url "paster:upload" %}">Upload</a></li>
+        </ul>
+        {% for image_row in image_grid %}
+        <div class="row">
+            {% for image in image_row %}
+            <div class="col-xs-6 col-md-3">
+            <a href="{{ image.image.url }}" class="thumbnail">
+              <img src="{{ image.image.url }}" alt="an image">
+            </a>
+          </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <nav>
+          <ul class="pagination">
+            <li>
+              {% if images.has_previous %}
+              <a href="?page={{ images.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+              {% else %}
+              <span aria-hidden="true">&laquo;</span>
+              {% endif %}
+            </li>
+            {% for page in page_navs %}
+            {% if page == images.number %}
+            <li><a href="?page={{ page }}"><strong>{{ page }}</strong></a></li>
+            {% else %}
+            <li><a href="?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+            {% endfor %}
+            <li>
+              {% if images.has_next %}
+              <a href="?page={{ images.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+              {% else %}
+              <span aria-hidden="true">&raquo;</span>
+              {% endif %}
+            </li>
+          </ul>
+        </nav>
+        <footer class="footer">
+          <div class="container">
+            <p class="text-muted">&copy; 2016 Jani Tiainen / Noware Labs</p>
+          </div>
+    </footer>
+  </div>
+    </body>
+</html>
